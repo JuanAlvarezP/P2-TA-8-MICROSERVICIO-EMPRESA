@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Entity
 @Data
+
 public class Proveedor extends Empresa{
     private long calificacion;
 }
