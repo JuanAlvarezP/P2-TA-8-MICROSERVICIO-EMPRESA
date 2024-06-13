@@ -11,14 +11,15 @@ import lombok.Data;
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 @Data
+
 public class Empresa { 
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
-private String nombre;
-private String direccion;
-private Long ruc;
-private String representante_legal;
-private String telefono;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String nombre;
+    private String direccion;
+    private Long ruc;
+    private String representante_legal;
+    private String telefono;
 }

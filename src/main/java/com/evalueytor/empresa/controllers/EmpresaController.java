@@ -52,7 +52,7 @@ public class EmpresaController {
 
     // Actualizar empresa
     @PutMapping("/empresa/updatebyid/{id}")
-    public ResponseEntity<Empresa> actualizarEmopresa(@PathVariable Long id, @RequestBody Empresa empresaActual) {
+    public ResponseEntity<Empresa> actualizarEmpresa(@PathVariable Long id, @RequestBody Empresa empresaActual) {
         Optional<Empresa> empresaOptional = empresaRepository.findById(id);
         return empresaOptional.map(empresa -> {
             empresa.setId(id);
@@ -78,6 +78,8 @@ public class EmpresaController {
         }
     }
 
+//-----------------------------------------------------------------------------------------------------
+    // Listar todo
     @GetMapping("proveedor/findall")
     public List<Proveedor> listarProveedor() {
         return proveedorRepository.findAll();
@@ -91,11 +93,40 @@ public class EmpresaController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Crear una nueva empresa
+    // Crear un nuevo proveedor/empresa
     @PostMapping("/proveedor/save")
     public ResponseEntity<Empresa> crearProveedor(@RequestBody Proveedor nuevoProveedor) {
         Empresa proveedorGuardado = empresaRepository.save(nuevoProveedor);
         return new ResponseEntity<>(proveedorGuardado, HttpStatus.CREATED);
+    }
+
+    // Actualizar empresa
+    @PutMapping("/proveedor/updatebyid/{id}")
+    public ResponseEntity<Proveedor> actualizarProveedor(@PathVariable Long id, @RequestBody Proveedor proveedorActual) {
+        Optional<Proveedor> proveedorOptional = proveedorRepository.findById(id);
+        return proveedorOptional.map(proveedor -> {
+            proveedor.setId(id);
+            proveedor.setNombre(proveedorActual.getNombre());
+            proveedor.setDireccion(proveedorActual.getDireccion());
+            proveedor.setRuc(proveedorActual.getRuc());
+            proveedor.setRepresentante_legal(proveedorActual.getRepresentante_legal());
+            proveedor.setTelefono(proveedorActual.getTelefono());
+            proveedor.setCalificacion(proveedorActual.getCalificacion());
+            Proveedor proveedorActualGuardado = proveedorRepository.save(proveedor);
+            return new ResponseEntity<>(proveedorActualGuardado, HttpStatus.OK);
+        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    // Eliminar un empresa por ID
+    @DeleteMapping("/proveedor/deletebyid/{id}")
+    public ResponseEntity<Void> eliminarProveedor(@PathVariable Long id) {
+        Optional<Proveedor> proveedorOptional = proveedorRepository.findById(id);
+        if (proveedorOptional.isPresent()) {
+            empresaRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 
